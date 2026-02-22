@@ -1,0 +1,2886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEON NEBULA PRO - Premium HTML5 Game Engine</title>
+    <style>
+        /* ========================================
+           PROFESSIONAL GAME STYLING SYSTEM
+           Premium Edition - $1000 Value
+        ======================================== */
+        
+        :root {
+            /* Neon Color Palette */
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --neon-purple: #bc13fe;
+            --neon-green: #39ff14;
+            --neon-orange: #ff6600;
+            --neon-yellow: #ffff00;
+            --neon-red: #ff0040;
+            
+            /* UI Colors */
+            --bg-dark: #0a0a0a;
+            --bg-overlay: rgba(0, 0, 0, 0.95);
+            --border-glow: rgba(0, 243, 255, 0.5);
+            
+            /* Typography */
+            --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --font-display: 'Impact', 'Arial Black', sans-serif;
+            
+            /* Animations */
+            --transition-fast: 0.2s ease;
+            --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        /* Global Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: var(--bg-dark);
+            font-family: var(--font-main);
+            color: white;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Canvas Styling */
+        #gameCanvas {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+        }
+        
+        /* ========================================
+           OVERLAY SYSTEM
+        ======================================== */
+        
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: var(--bg-overlay);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .overlay.hidden {
+            display: none;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* ========================================
+           TYPOGRAPHY SYSTEM
+        ======================================== */
+        
+        .title-main {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 8vw, 6rem);
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink), var(--neon-purple));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientFlow 3s ease infinite;
+            text-shadow: 0 0 30px rgba(0, 243, 255, 0.5);
+            margin-bottom: 2rem;
+        }
+        
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+        
+        /* ========================================
+           BUTTON SYSTEM
+        ======================================== */
+        
+        .btn {
+            position: relative;
+            padding: 1rem 3rem;
+            margin: 0.5rem;
+            border: 2px solid var(--neon-blue);
+            background: transparent;
+            color: var(--neon-blue);
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            overflow: hidden;
+            font-family: var(--font-main);
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+            z-index: -1;
+        }
+        
+        .btn:hover {
+            color: black;
+            box-shadow: 0 0 30px var(--neon-blue), inset 0 0 20px rgba(0, 243, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            border-color: var(--neon-pink);
+            color: var(--neon-pink);
+        }
+        
+        .btn-secondary::before {
+            background: var(--neon-pink);
+        }
+        
+        .btn-secondary:hover {
+            box-shadow: 0 0 30px var(--neon-pink);
+        }
+        
+        .btn-success {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+        }
+        
+        .btn-success::before {
+            background: var(--neon-green);
+        }
+        
+        /* ========================================
+           PANEL SYSTEM
+        ======================================== */
+        
+        .panel {
+            background: rgba(10, 10, 20, 0.95);
+            border: 2px solid var(--neon-blue);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 0 50px rgba(0, 243, 255, 0.3), inset 0 0 30px rgba(0, 243, 255, 0.1);
+            backdrop-filter: blur(20px);
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.4s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .panel-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-align: center;
+            color: var(--neon-blue);
+            text-shadow: 0 0 20px var(--neon-blue);
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+        }
+        
+        /* ========================================
+           FORM CONTROLS
+        ======================================== */
+        
+        .form-group {
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 1.1rem;
+            color: var(--neon-blue);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        select, input[type="range"], input[type="text"] {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 10px;
+            font-family: var(--font-main);
+            transition: var(--transition-fast);
+            min-width: 200px;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+        }
+        
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            background: rgba(0, 243, 255, 0.2);
+            border-radius: 5px;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        /* ========================================
+           HUD (Heads-Up Display)
+        ======================================== */
+        
+        #hud {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            z-index: 50;
+            pointer-events: none;
+        }
+        
+        .hud-item {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid var(--neon-blue);
+            border-radius: 15px;
+            padding: 1rem 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+        }
+        
+        .hud-label {
+            font-size: 0.9rem;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.8;
+        }
+        
+        .hud-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 0 10px var(--neon-blue);
+            margin-top: 0.25rem;
+        }
+        
+        /* ========================================
+           SHOP GRID
+        ======================================== */
+        
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+            max-width: 1200px;
+        }
+        
+        .shop-item {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--neon-purple);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+        
+        .shop-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 40px rgba(188, 19, 254, 0.5);
+            border-color: var(--neon-pink);
+        }
+        
+        .shop-item-preview {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        
+        .shop-item-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--neon-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .shop-item-price {
+            font-size: 1.1rem;
+            color: var(--neon-green);
+            margin-bottom: 1rem;
+        }
+        
+        .shop-item-locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* ========================================
+           ACHIEVEMENTS SYSTEM
+        ======================================== */
+        
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .achievement {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: var(--transition-smooth);
+        }
+        
+        .achievement.unlocked {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+        }
+        
+        .achievement-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            filter: grayscale(100%);
+        }
+        
+        .achievement.unlocked .achievement-icon {
+            filter: grayscale(0%);
+            animation: bounce 0.6s ease;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        .achievement-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+        
+        .achievement-desc {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        /* ========================================
+           LEADERBOARD
+        ======================================== */
+        
+        .leaderboard {
+            width: 100%;
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+        
+        .leaderboard-entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--neon-blue);
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            transition: var(--transition-fast);
+        }
+        
+        .leaderboard-entry:hover {
+            background: rgba(0, 243, 255, 0.1);
+            transform: translateX(10px);
+        }
+        
+        .leaderboard-rank {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--neon-pink);
+            min-width: 50px;
+        }
+        
+        .leaderboard-name {
+            flex: 1;
+            font-size: 1.1rem;
+            color: white;
+        }
+        
+        .leaderboard-score {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--neon-green);
+        }
+        
+        /* ========================================
+           PROGRESS BARS
+        ======================================== */
+        
+        .progress-container {
+            width: 100%;
+            height: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--neon-blue);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            margin: 1rem 0;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            border-radius: 13px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 0 10px black;
+        }
+        
+        /* ========================================
+           MODAL NOTIFICATIONS
+        ======================================== */
+        
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 2rem;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--neon-green);
+            border-radius: 15px;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.5);
+            z-index: 1000;
+            animation: slideInRight 0.4s ease, fadeOut 0.3s ease 2.7s forwards;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+        }
+        
+        /* ========================================
+           RESPONSIVE DESIGN
+        ======================================== */
+        
+        @media (max-width: 768px) {
+            .title-main {
+                font-size: 3rem;
+            }
+            
+            .panel {
+                padding: 2rem 1rem;
+            }
+            
+            .shop-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                padding: 0.75rem 2rem;
+                font-size: 0.9rem;
+            }
+            
+            #hud {
+                padding: 1rem;
+            }
+            
+            .hud-value {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* ========================================
+           LOADING SCREEN
+        ======================================== */
+        
+        .loading-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        
+        .loader {
+            width: 100px;
+            height: 100px;
+            border: 5px solid rgba(0, 243, 255, 0.2);
+            border-top-color: var(--neon-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            margin-top: 2rem;
+            font-size: 1.5rem;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        /* ========================================
+           CUSTOM SCROLLBAR
+        ======================================== */
+        
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-blue);
+            border-radius: 10px;
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--neon-pink);
+        }
+        
+        /* ========================================
+           PARTICLE EFFECTS (CSS)
+        ======================================== */
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        /* ========================================
+           ACCESSIBILITY
+        ======================================== */
+        
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* Focus styles for keyboard navigation */
+        button:focus-visible,
+        select:focus-visible,
+        input:focus-visible {
+            outline: 3px solid var(--neon-pink);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========================================
+         LOADING SCREEN
+    ======================================== -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loader"></div>
+        <div class="loading-text">INITIALIZING GAME ENGINE...</div>
+    </div>
+
+    <!-- ========================================
+         MAIN GAME CANVAS
+    ======================================== -->
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- ========================================
+         HUD (HEADS-UP DISPLAY)
+    ======================================== -->
+    <div id="hud" class="hidden">
+        <div class="hud-item">
+            <div class="hud-label">Score</div>
+            <div class="hud-value" id="hudScore">0</div>
+        </div>
+        <div class="hud-item">
+            <div class="hud-label">Level</div>
+            <div class="hud-value" id="hudLevel">1</div>
+        </div>
+        <div class="hud-item">
+            <div class="hud-label">Coins</div>
+            <div class="hud-value" id="hudCoins">0</div>
+        </div>
+        <div class="hud-item">
+            <div class="hud-label">High Score</div>
+            <div class="hud-value" id="hudHighScore">0</div>
+        </div>
+    </div>
+
+    <!-- ========================================
+         START SCREEN
+    ======================================== -->
+    <div id="startScreen" class="overlay">
+        <h1 class="title-main" id="gameTitle">NEON NEBULA</h1>
+        <div class="subtitle" id="gameSubtitle">Premium Edition</div>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 800px;">
+            <button class="btn" onclick="GameController.startGame('classic')" id="playBtn">🎮 PLAY CLASSIC</button>
+            <button class="btn btn-secondary" onclick="GameController.startGame('endless')" id="endlessBtn">♾️ ENDLESS MODE</button>
+            <button class="btn btn-secondary" onclick="GameController.startGame('timeattack')" id="timeAttackBtn">⏱️ TIME ATTACK</button>
+            <button class="btn" onclick="UIManager.showSettings()" id="settingsBtn">⚙️ SETTINGS</button>
+            <button class="btn" onclick="UIManager.showShop()" id="shopBtn">🛒 SHOP</button>
+            <button class="btn" onclick="UIManager.showAchievements()" id="achievementsBtn">🏆 ACHIEVEMENTS</button>
+            <button class="btn" onclick="UIManager.showLeaderboard()" id="leaderboardBtn">📊 LEADERBOARD</button>
+            <button class="btn btn-success" onclick="UIManager.showTutorial()" id="tutorialBtn">❓ HOW TO PLAY</button>
+        </div>
+    </div>
+
+    <!-- ========================================
+         SETTINGS PANEL
+    ======================================== -->
+    <div id="settingsPanel" class="overlay hidden">
+        <div class="panel">
+            <h2 class="panel-title" id="settingsTitle">⚙️ SETTINGS</h2>
+            
+            <div class="form-group">
+                <label class="form-label" id="langLabel">🌍 Language:</label>
+                <select id="langSelect" onchange="I18nSystem.setLanguage(this.value)">
+                    <option value="en">English</option>
+                    <option value="ar">العربية</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                    <option value="es">Español</option>
+                    <option value="it">Italiano</option>
+                    <option value="pt">Português</option>
+                    <option value="ru">Русский</option>
+                    <option value="zh">中文</option>
+                    <option value="ja">日本語</option>
+                    <option value="ko">한국어</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" id="volLabel">🔊 Master Volume: <span id="volValue">50%</span></label>
+                <input type="range" min="0" max="100" value="50" id="volRange" oninput="AudioEngine.setMasterVolume(this.value)">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" id="musicVolLabel">🎵 Music Volume: <span id="musicVolValue">70%</span></label>
+                <input type="range" min="0" max="100" value="70" id="musicVolRange" oninput="AudioEngine.setMusicVolume(this.value)">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" id="sfxVolLabel">🎺 SFX Volume: <span id="sfxVolValue">80%</span></label>
+                <input type="range" min="0" max="100" value="80" id="sfxVolRange" oninput="AudioEngine.setSFXVolume(this.value)">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">🎨 Graphics Quality:</label>
+                <select id="qualitySelect" onchange="EngineConfig.setQuality(this.value)">
+                    <option value="low">Low (Better Performance)</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="high">High (Better Visuals)</option>
+                    <option value="ultra">Ultra (Best Quality)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">🕹️ Control Style:</label>
+                <select id="controlSelect" onchange="InputManager.setControlStyle(this.value)">
+                    <option value="space">Space Bar</option>
+                    <option value="click">Mouse Click</option>
+                    <option value="touch">Touch (Mobile)</option>
+                    <option value="all" selected>All Controls</option>
+                </select>
+            </div>
+            
+            <div style="margin-top: 2rem;">
+                <button class="btn btn-secondary" onclick="SaveSystem.resetProgress()">🔄 RESET PROGRESS</button>
+                <button class="btn" onclick="UIManager.hideSettings()">✅ SAVE & CLOSE</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================
+         SHOP PANEL
+    ======================================== -->
+    <div id="shopPanel" class="overlay hidden">
+        <div class="panel">
+            <h2 class="panel-title" id="shopTitle">🛒 SHOP</h2>
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <span style="font-size: 1.5rem; color: var(--neon-green);">💰 Your Coins: <span id="shopCoins">0</span></span>
+            </div>
+            
+            <div class="shop-grid" id="shopGrid">
+                <!-- Items will be dynamically generated by ShopSystem -->
+            </div>
+            
+            <button class="btn" onclick="UIManager.hideShop()">⬅️ BACK</button>
+        </div>
+    </div>
+
+    <!-- ========================================
+         ACHIEVEMENTS PANEL
+    ======================================== -->
+    <div id="achievementsPanel" class="overlay hidden">
+        <div class="panel">
+            <h2 class="panel-title" id="achievementsTitle">🏆 ACHIEVEMENTS</h2>
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <span style="font-size: 1.3rem; color: var(--neon-blue);">Unlocked: <span id="achievementCount">0</span> / <span id="achievementTotal">0</span></span>
+            </div>
+            
+            <div class="achievements-grid" id="achievementsGrid">
+                <!-- Achievements will be dynamically generated -->
+            </div>
+            
+            <button class="btn" onclick="UIManager.hideAchievements()">⬅️ BACK</button>
+        </div>
+    </div>
+
+    <!-- ========================================
+         LEADERBOARD PANEL
+    ======================================== -->
+    <div id="leaderboardPanel" class="overlay hidden">
+        <div class="panel">
+            <h2 class="panel-title" id="leaderboardTitle">📊 LEADERBOARD</h2>
+            
+            <div class="form-group">
+                <label class="form-label">Select Mode:</label>
+                <select id="leaderboardMode" onchange="LeaderboardSystem.displayLeaderboard(this.value)">
+                    <option value="classic">Classic Mode</option>
+                    <option value="endless">Endless Mode</option>
+                    <option value="timeattack">Time Attack</option>
+                </select>
+            </div>
+            
+            <div class="leaderboard" id="leaderboardList">
+                <!-- Leaderboard entries will be dynamically generated -->
+            </div>
+            
+            <button class="btn" onclick="UIManager.hideLeaderboard()">⬅️ BACK</button>
+        </div>
+    </div>
+
+    <!-- ========================================
+         TUTORIAL PANEL
+    ======================================== -->
+    <div id="tutorialPanel" class="overlay hidden">
+        <div class="panel">
+            <h2 class="panel-title">❓ HOW TO PLAY</h2>
+            <div style="max-width: 600px; text-align: left; color: rgba(255,255,255,0.9); line-height: 1.8;">
+                <h3 style="color: var(--neon-blue); margin-top: 1.5rem;">🎮 CONTROLS</h3>
+                <ul>
+                    <li><strong>Space Bar / Click / Tap:</strong> Jump</li>
+                    <li><strong>Hold:</strong> Continuous jump (advanced mode)</li>
+                </ul>
+                
+                <h3 style="color: var(--neon-blue); margin-top: 1.5rem;">🎯 OBJECTIVE</h3>
+                <ul>
+                    <li>Navigate through obstacles</li>
+                    <li>Collect coins for shop purchases</li>
+                    <li>Survive as long as possible</li>
+                    <li>Beat your high score!</li>
+                </ul>
+                
+                <h3 style="color: var(--neon-blue); margin-top: 1.5rem;">🌟 GAME MODES</h3>
+                <ul>
+                    <li><strong>Classic:</strong> Traditional gameplay with increasing difficulty</li>
+                    <li><strong>Endless:</strong> Non-stop action, no limits!</li>
+                    <li><strong>Time Attack:</strong> Score as much as possible in 60 seconds</li>
+                </ul>
+                
+                <h3 style="color: var(--neon-blue); margin-top: 1.5rem;">💡 TIPS</h3>
+                <ul>
+                    <li>Time your jumps carefully</li>
+                    <li>Collect power-ups for special abilities</li>
+                    <li>Unlock achievements for bonus coins</li>
+                    <li>Purchase skins and upgrades in the shop</li>
+                </ul>
+            </div>
+            <button class="btn btn-success" onclick="UIManager.hideTutorial(); GameController.startGame('classic');" style="margin-top: 2rem;">🚀 START PLAYING!</button>
+            <button class="btn" onclick="UIManager.hideTutorial()">⬅️ BACK</button>
+        </div>
+    </div>
+
+    <!-- ========================================
+         GAME OVER PANEL
+    ======================================== -->
+    <div id="gameOverPanel" class="overlay hidden">
+        <div class="panel">
+            <h2 class="panel-title" style="color: var(--neon-red);">💀 GAME OVER</h2>
+            
+            <div style="margin: 2rem 0; text-align: center;">
+                <div style="font-size: 1.3rem; color: var(--neon-blue); margin-bottom: 1rem;">FINAL SCORE</div>
+                <div style="font-size: 4rem; font-weight: 900; color: white; text-shadow: 0 0 20px var(--neon-blue);" id="finalScore">0</div>
+                
+                <div style="margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 400px; margin: 2rem auto;">
+                    <div style="background: rgba(0,0,0,0.5); padding: 1rem; border-radius: 10px; border: 1px solid var(--neon-green);">
+                        <div style="color: var(--neon-green); font-size: 0.9rem;">Coins Earned</div>
+                        <div style="font-size: 1.8rem; font-weight: 700;" id="coinsEarned">0</div>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.5); padding: 1rem; border-radius: 10px; border: 1px solid var(--neon-pink);">
+                        <div style="color: var(--neon-pink); font-size: 0.9rem;">Best Score</div>
+                        <div style="font-size: 1.8rem; font-weight: 700;" id="bestScore">0</div>
+                    </div>
+                </div>
+                
+                <div id="newRecordBadge" class="hidden" style="margin-top: 1rem; padding: 1rem; background: linear-gradient(45deg, var(--neon-green), var(--neon-blue)); border-radius: 10px; font-size: 1.5rem; font-weight: 900; animation: pulse 1s infinite;">
+                    🎉 NEW RECORD! 🎉
+                </div>
+            </div>
+            
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+                <button class="btn btn-success" onclick="GameController.restartGame()">🔄 PLAY AGAIN</button>
+                <button class="btn" onclick="UIManager.showLeaderboard()">📊 VIEW LEADERBOARD</button>
+                <button class="btn btn-secondary" onclick="UIManager.returnToMenu()">🏠 MAIN MENU</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================
+         PAUSE PANEL
+    ======================================== -->
+    <div id="pausePanel" class="overlay hidden">
+        <div class="panel">
+            <h2 class="panel-title">⏸️ PAUSED</h2>
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <button class="btn btn-success" onclick="GameController.resumeGame()">▶️ RESUME</button>
+                <button class="btn" onclick="GameController.restartGame()">🔄 RESTART</button>
+                <button class="btn btn-secondary" onclick="UIManager.returnToMenu()">🏠 MAIN MENU</button>
+            </div>
+        </div>
+    </div>
+
+<!-- ========================================
+     JAVASCRIPT GAME ENGINE
+     Professional Architecture - $1000+ Value
+======================================== -->
+<script>
+"use strict";
+
+/* ========================================
+   GLOBAL CONFIGURATION
+======================================== */
+
+const EngineConfig = {
+    // Version Info
+    VERSION: '2.0.0',
+    BUILD: 'Premium',
+    
+    // Canvas Settings
+    canvas: null,
+    ctx: null,
+    width: 0,
+    height: 0,
+    
+    // Performance Settings
+    targetFPS: 60,
+    deltaTime: 0,
+    lastFrameTime: 0,
+    
+    // Quality Settings
+    quality: 'medium',
+    particleCount: 50,
+    shadowBlur: 20,
+    glowIntensity: 1,
+    
+    init() {
+        this.canvas = document.getElementById('gameCanvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+    },
+    
+    resize() {
+        this.width = window.innerWidth;
+        this.height = window.innerHeight;
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
+    },
+    
+    setQuality(level) {
+        this.quality = level;
+        switch(level) {
+            case 'low':
+                this.particleCount = 20;
+                this.shadowBlur = 5;
+                this.glowIntensity = 0.5;
+                break;
+            case 'medium':
+                this.particleCount = 50;
+                this.shadowBlur = 15;
+                this.glowIntensity = 0.8;
+                break;
+            case 'high':
+                this.particleCount = 100;
+                this.shadowBlur = 25;
+                this.glowIntensity = 1.2;
+                break;
+            case 'ultra':
+                this.particleCount = 200;
+                this.shadowBlur = 35;
+                this.glowIntensity = 1.5;
+                break;
+        }
+    }
+};
+
+/* ========================================
+   INTERNATIONALIZATION SYSTEM
+======================================== */
+
+const I18nSystem = {
+    currentLang: 'en',
+    
+    translations: {
+        en: {
+            gameTitle: 'NEON NEBULA',
+            subtitle: 'Premium Edition',
+            play: 'PLAY CLASSIC',
+            endless: 'ENDLESS MODE',
+            timeAttack: 'TIME ATTACK',
+            settings: 'SETTINGS',
+            shop: 'SHOP',
+            achievements: 'ACHIEVEMENTS',
+            leaderboard: 'LEADERBOARD',
+            tutorial: 'HOW TO PLAY',
+            score: 'Score',
+            level: 'Level',
+            coins: 'Coins',
+            highScore: 'High Score',
+            gameOver: 'GAME OVER',
+            paused: 'PAUSED',
+            resume: 'RESUME',
+            restart: 'RESTART',
+            mainMenu: 'MAIN MENU'
+        },
+        ar: {
+            gameTitle: 'سديم النيون',
+            subtitle: 'النسخة المميزة',
+            play: 'العب الكلاسيكي',
+            endless: 'وضع لا نهائي',
+            timeAttack: 'هجوم الوقت',
+            settings: 'الإعدادات',
+            shop: 'المتجر',
+            achievements: 'الإنجازات',
+            leaderboard: 'لوحة المتصدرين',
+            tutorial: 'كيفية اللعب',
+            score: 'النقاط',
+            level: 'المستوى',
+            coins: 'العملات',
+            highScore: 'أعلى نقاط',
+            gameOver: 'انتهت اللعبة',
+            paused: 'متوقف',
+            resume: 'استئناف',
+            restart: 'إعادة',
+            mainMenu: 'القائمة الرئيسية'
+        },
+        fr: {
+            gameTitle: 'NÉON NÉBULEUSE',
+            subtitle: 'Édition Premium',
+            play: 'JOUER CLASSIQUE',
+            endless: 'MODE INFINI',
+            timeAttack: 'ATTAQUE TEMPORELLE',
+            settings: 'PARAMÈTRES',
+            shop: 'BOUTIQUE',
+            achievements: 'SUCCÈS',
+            leaderboard: 'CLASSEMENT',
+            tutorial: 'COMMENT JOUER'
+        },
+        de: {
+            gameTitle: 'NEON NEBEL',
+            subtitle: 'Premium Edition',
+            play: 'KLASSISCH SPIELEN',
+            endless: 'ENDLOS MODUS',
+            timeAttack: 'ZEITANGRIFF',
+            settings: 'EINSTELLUNGEN',
+            shop: 'LADEN',
+            achievements: 'ERFOLGE',
+            leaderboard: 'BESTENLISTE'
+        },
+        es: {
+            gameTitle: 'NEBULOSA NEÓN',
+            subtitle: 'Edición Premium',
+            play: 'JUGAR CLÁSICO',
+            endless: 'MODO INFINITO',
+            timeAttack: 'ATAQUE TEMPORAL',
+            settings: 'AJUSTES',
+            shop: 'TIENDA',
+            achievements: 'LOGROS',
+            leaderboard: 'TABLA DE LÍDERES'
+        },
+        zh: {
+            gameTitle: '霓虹星云',
+            subtitle: '高级版',
+            play: '经典模式',
+            endless: '无尽模式',
+            timeAttack: '限时挑战',
+            settings: '设置',
+            shop: '商店',
+            achievements: '成就',
+            leaderboard: '排行榜'
+        },
+        ru: {
+            gameTitle: 'НЕОНОВАЯ ТУМАННОСТЬ',
+            subtitle: 'Премиум издание',
+            play: 'КЛАССИКА',
+            endless: 'БЕСКОНЕЧНЫЙ РЕЖИМ',
+            timeAttack: 'АТАКА НА ВРЕМЯ',
+            settings: 'НАСТРОЙКИ',
+            shop: 'МАГАЗИН',
+            achievements: 'ДОСТИЖЕНИЯ',
+            leaderboard: 'ТАБЛИЦА ЛИДЕРОВ'
+        }
+    },
+    
+    setLanguage(lang) {
+        this.currentLang = lang;
+        document.documentElement.lang = lang;
+        document.getElementById('langSelect').value = lang;
+        
+        const t = this.translations[lang] || this.translations.en;
+        
+        // Update UI text
+        document.getElementById('gameTitle').textContent = t.gameTitle;
+        document.getElementById('gameSubtitle').textContent = t.subtitle;
+        
+        SaveSystem.saveSetting('language', lang);
+        UIManager.showNotification(`Language changed to ${lang.toUpperCase()}`, 'success');
+    },
+    
+    t(key) {
+        const t = this.translations[this.currentLang] || this.translations.en;
+        return t[key] || key;
+    }
+};
+
+/* ========================================
+   ADVANCED AUDIO ENGINE
+   Web Audio API Implementation
+======================================== */
+
+const AudioEngine = {
+    context: null,
+    masterGain: null,
+    musicGain: null,
+    sfxGain: null,
+    
+    // Audio State
+    initialized: false,
+    muted: false,
+    
+    // Volumes (0-1)
+    masterVolume: 0.5,
+    musicVolume: 0.7,
+    sfxVolume: 0.8,
+    
+    // Background Music System
+    backgroundMusic: null,
+    musicTracks: [],
+    currentTrack: 0,
+    
+    init() {
+        if (this.initialized) return;
+        
+        try {
+            this.context = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Create gain nodes for mixing
+            this.masterGain = this.context.createGain();
+            this.musicGain = this.context.createGain();
+            this.sfxGain = this.context.createGain();
+            
+            // Connect gain nodes
+            this.musicGain.connect(this.masterGain);
+            this.sfxGain.connect(this.masterGain);
+            this.masterGain.connect(this.context.destination);
+            
+            // Set initial volumes
+            this.masterGain.gain.value = this.masterVolume;
+            this.musicGain.gain.value = this.musicVolume;
+            this.sfxGain.gain.value = this.sfxVolume;
+            
+            this.initialized = true;
+            console.log('AudioEngine initialized successfully');
+        } catch (e) {
+            console.error('AudioEngine initialization failed:', e);
+        }
+    },
+    
+    resume() {
+        if (this.context && this.context.state === 'suspended') {
+            this.context.resume();
+        }
+    },
+    
+    setMasterVolume(value) {
+        this.masterVolume = value / 100;
+        if (this.masterGain) {
+            this.masterGain.gain.value = this.masterVolume;
+        }
+        document.getElementById('volValue').textContent = value + '%';
+        SaveSystem.saveSetting('masterVolume', value);
+    },
+    
+    setMusicVolume(value) {
+        this.musicVolume = value / 100;
+        if (this.musicGain) {
+            this.musicGain.gain.value = this.musicVolume;
+        }
+        document.getElementById('musicVolValue').textContent = value + '%';
+        SaveSystem.saveSetting('musicVolume', value);
+    },
+    
+    setSFXVolume(value) {
+        this.sfxVolume = value / 100;
+        if (this.sfxGain) {
+            this.sfxGain.gain.value = this.sfxVolume;
+        }
+        document.getElementById('sfxVolValue').textContent = value + '%';
+        SaveSystem.saveSetting('sfxVolume', value);
+    },
+    
+    // Synthesized Sound Effects
+    playTone(frequency, type = 'sine', duration = 0.1, gainValue = 0.3) {
+        if (!this.initialized) this.init();
+        this.resume();
+        
+        const oscillator = this.context.createOscillator();
+        const gainNode = this.context.createGain();
+        
+        oscillator.type = type;
+        oscillator.frequency.setValueAtTime(frequency, this.context.currentTime);
+        
+        gainNode.gain.setValueAtTime(gainValue, this.context.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, this.context.currentTime + duration);
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(this.sfxGain);
+        
+        oscillator.start(this.context.currentTime);
+        oscillator.stop(this.context.currentTime + duration);
+    },
+    
+    // Pre-defined sound effects
+    playJump() {
+        this.playTone(440, 'triangle', 0.15, 0.2);
+        setTimeout(() => this.playTone(660, 'triangle', 0.1, 0.15), 50);
+    },
+    
+    playCollision() {
+        this.playTone(110, 'sawtooth', 0.3, 0.25);
+    },
+    
+    playCoinCollect() {
+        this.playTone(800, 'square', 0.1, 0.2);
+        setTimeout(() => this.playTone(1200, 'square', 0.1, 0.15), 80);
+    },
+    
+    playPowerUp() {
+        for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+                this.playTone(400 + i * 200, 'sine', 0.08, 0.15);
+            }, i * 50);
+        }
+    },
+    
+    playLevelUp() {
+        const notes = [523, 587, 659, 784, 880];
+        notes.forEach((freq, i) => {
+            setTimeout(() => {
+                this.playTone(freq, 'triangle', 0.2, 0.2);
+            }, i * 100);
+        });
+    },
+    
+    playGameOver() {
+        this.playTone(440, 'sawtooth', 0.2, 0.3);
+        setTimeout(() => this.playTone(330, 'sawtooth', 0.2, 0.3), 200);
+        setTimeout(() => this.playTone(220, 'sawtooth', 0.5, 0.3), 400);
+    },
+    
+    playClick() {
+        this.playTone(1000, 'square', 0.05, 0.1);
+    },
+    
+    playUnlock() {
+        this.playTone(1000, 'sine', 0.1, 0.2);
+        setTimeout(() => this.playTone(1500, 'sine', 0.15, 0.2), 100);
+    },
+    
+    // Background music (procedural)
+    startBackgroundMusic() {
+        if (!this.initialized) this.init();
+        this.resume();
+        
+        // Simple ambient music loop
+        const playAmbient = () => {
+            if (!GameState.isPlaying) return;
+            
+            const notes = [261.63, 329.63, 392.00, 523.25]; // C, E, G, C
+            const randomNote = notes[Math.floor(Math.random() * notes.length)];
+            
+            this.playTone(randomNote, 'sine', 2, 0.05);
+            
+            setTimeout(playAmbient, 2000 + Math.random() * 2000);
+        };
+        
+        playAmbient();
+    },
+    
+    stopBackgroundMusic() {
+        // Stop any ongoing music
+    }
+};
+
+/* ========================================
+   INPUT MANAGER
+   Handles Keyboard, Mouse, Touch Input
+======================================== */
+
+const InputManager = {
+    keys: {},
+    mouse: { x: 0, y: 0, clicked: false },
+    touch: { x: 0, y: 0, active: false },
+    controlStyle: 'all',
+    
+    init() {
+        // Keyboard
+        window.addEventListener('keydown', (e) => {
+            this.keys[e.code] = true;
+            
+            if (e.code === 'Space' && GameState.isPlaying) {
+                e.preventDefault();
+                this.handleJump();
+            }
+            
+            if (e.code === 'Escape' && GameState.isPlaying) {
+                GameController.pauseGame();
+            }
+        });
+        
+        window.addEventListener('keyup', (e) => {
+            this.keys[e.code] = false;
+        });
+        
+        // Mouse
+        EngineConfig.canvas.addEventListener('mousedown', (e) => {
+            this.mouse.clicked = true;
+            this.mouse.x = e.clientX;
+            this.mouse.y = e.clientY;
+            
+            if (GameState.isPlaying) {
+                this.handleJump();
+            }
+        });
+        
+        window.addEventListener('mouseup', () => {
+            this.mouse.clicked = false;
+        });
+        
+        // Touch
+        EngineConfig.canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            this.touch.active = true;
+            this.touch.x = e.touches[0].clientX;
+            this.touch.y = e.touches[0].clientY;
+            
+            if (GameState.isPlaying) {
+                this.handleJump();
+            }
+        });
+        
+        EngineConfig.canvas.addEventListener('touchend', () => {
+            this.touch.active = false;
+        });
+        
+        console.log('InputManager initialized');
+    },
+    
+    handleJump() {
+        if (this.controlStyle === 'all' || 
+            (this.controlStyle === 'space' && this.keys['Space']) ||
+            (this.controlStyle === 'click' && this.mouse.clicked) ||
+            (this.controlStyle === 'touch' && this.touch.active)) {
+            
+            Player.jump();
+        }
+    },
+    
+    setControlStyle(style) {
+        this.controlStyle = style;
+        SaveSystem.saveSetting('controlStyle', style);
+    }
+};
+
+/* ========================================
+   GAME STATE MANAGER
+======================================== */
+
+const GameState = {
+    // Game Status
+    isPlaying: false,
+    isPaused: false,
+    gameMode: 'classic', // classic, endless, timeattack
+    
+    // Scores & Stats
+    score: 0,
+    coins: 0,
+    level: 1,
+    highScore: 0,
+    
+    // Gameplay
+    gameSpeed: 3,
+    baseSpeed: 3,
+    maxSpeed: 12,
+    obstacleSpawnTimer: 0,
+    obstacleSpawnInterval: 120, // frames
+    
+    // Time Attack
+    timeRemaining: 60,
+    timeAttackTimer: 0,
+    
+    // Difficulty
+    difficultyLevel: 1,
+    nextLevelScore: 500,
+    
+    reset() {
+        this.score = 0;
+        this.coins = 0;
+        this.level = 1;
+        this.gameSpeed = this.baseSpeed;
+        this.obstacleSpawnTimer = 0;
+        this.difficultyLevel = 1;
+        this.nextLevelScore = 500;
+        
+        if (this.gameMode === 'timeattack') {
+            this.timeRemaining = 60;
+            this.timeAttackTimer = 0;
+        }
+    },
+    
+    addScore(points) {
+        this.score += points;
+        
+        // Level up check
+        if (this.score >= this.nextLevelScore) {
+            this.levelUp();
+        }
+        
+        // Update HUD
+        UIManager.updateHUD();
+    },
+    
+    addCoins(amount) {
+        this.coins += amount;
+        SaveSystem.addCoins(amount);
+        UIManager.updateHUD();
+    },
+    
+    levelUp() {
+        this.level++;
+        this.difficultyLevel++;
+        this.nextLevelScore += 500 * this.level;
+        
+        // Increase game speed
+        if (this.gameSpeed < this.maxSpeed) {
+            this.gameSpeed += 0.5;
+        }
+        
+        // Increase spawn rate
+        if (this.obstacleSpawnInterval > 60) {
+            this.obstacleSpawnInterval -= 5;
+        }
+        
+        AudioEngine.playLevelUp();
+        UIManager.showNotification(`🎉 LEVEL ${this.level}!`, 'success');
+        AchievementSystem.checkAchievement('level', this.level);
+        
+        // Particle explosion
+        ParticleSystem.createLevelUpExplosion();
+    }
+};
+
+/* ========================================
+   SAVE SYSTEM
+   LocalStorage Management
+======================================== */
+
+const SaveSystem = {
+    STORAGE_KEY: 'neonNebula_save',
+    
+    defaultData: {
+        highScores: {
+            classic: 0,
+            endless: 0,
+            timeattack: 0
+        },
+        totalCoins: 0,
+        settings: {
+            language: 'en',
+            masterVolume: 50,
+            musicVolume: 70,
+            sfxVolume: 80,
+            quality: 'medium',
+            controlStyle: 'all'
+        },
+        unlockedSkins: ['default'],
+        currentSkin: 'default',
+        achievements: {},
+        stats: {
+            gamesPlayed: 0,
+            totalScore: 0,
+            totalCoins: 0,
+            totalJumps: 0,
+            totalDeaths: 0
+        }
+    },
+    
+    load() {
+        try {
+            const data = localStorage.getItem(this.STORAGE_KEY);
+            if (data) {
+                return JSON.parse(data);
+            }
+        } catch (e) {
+            console.error('Failed to load save data:', e);
+        }
+        return this.defaultData;
+    },
+    
+    save(data) {
+        try {
+            localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
+        } catch (e) {
+            console.error('Failed to save data:', e);
+        }
+    },
+    
+    getSaveData() {
+        return this.load();
+    },
+    
+    saveSetting(key, value) {
+        const data = this.load();
+        data.settings[key] = value;
+        this.save(data);
+    },
+    
+    addCoins(amount) {
+        const data = this.load();
+        data.totalCoins += amount;
+        data.stats.totalCoins += amount;
+        this.save(data);
+    },
+    
+    spendCoins(amount) {
+        const data = this.load();
+        if (data.totalCoins >= amount) {
+            data.totalCoins -= amount;
+            this.save(data);
+            return true;
+        }
+        return false;
+    },
+    
+    getCoins() {
+        const data = this.load();
+        return data.totalCoins || 0;
+    },
+    
+    saveHighScore(mode, score) {
+        const data = this.load();
+        if (score > (data.highScores[mode] || 0)) {
+            data.highScores[mode] = score;
+            this.save(data);
+            return true; // New record
+        }
+        return false;
+    },
+    
+    getHighScore(mode) {
+        const data = this.load();
+        return data.highScores[mode] || 0;
+    },
+    
+    unlockSkin(skinId) {
+        const data = this.load();
+        if (!data.unlockedSkins.includes(skinId)) {
+            data.unlockedSkins.push(skinId);
+            this.save(data);
+        }
+    },
+    
+    isSkincUnlocked(skinId) {
+        const data = this.load();
+        return data.unlockedSkins.includes(skinId);
+    },
+    
+    setCurrentSkin(skinId) {
+        const data = this.load();
+        data.currentSkin = skinId;
+        this.save(data);
+    },
+    
+    getCurrentSkin() {
+        const data = this.load();
+        return data.currentSkin || 'default';
+    },
+    
+    incrementStat(stat) {
+        const data = this.load();
+        data.stats[stat] = (data.stats[stat] || 0) + 1;
+        this.save(data);
+    },
+    
+    resetProgress() {
+        if (confirm('Are you sure you want to reset ALL progress? This cannot be undone!')) {
+            localStorage.removeItem(this.STORAGE_KEY);
+            location.reload();
+        }
+    }
+};
+
+/* ========================================
+   PLAYER SYSTEM
+======================================== */
+
+const Player = {
+    // Position & Size
+    x: 100,
+    y: 0,
+    width: 40,
+    height: 40,
+    
+    // Physics
+    velocityY: 0,
+    gravity: 0.6,
+    jumpPower: -20,
+    isGrounded: false,
+    
+    // Visual
+    color: '#00f3ff',
+    rotation: 0,
+    scale: 1,
+    
+    // Animation
+    animationFrame: 0,
+    pulseScale: 1,
+    
+    // Power-ups
+    invincible: false,
+    invincibleTimer: 0,
+    
+    // Stats
+    jumps: 0,
+    
+    init() {
+        const groundY = EngineConfig.height - 100;
+        this.y = groundY - this.height;
+        this.velocityY = 0;
+        this.isGrounded = true;
+        this.rotation = 0;
+        this.invincible = false;
+        
+        // Load skin
+        this.applySkin(SaveSystem.getCurrentSkin());
+    },
+    
+    jump() {
+        if (this.isGrounded && !GameState.isPaused) {
+            this.velocityY = this.jumpPower;
+            this.isGrounded = false;
+            this.jumps++;
+            AudioEngine.playJump();
+            
+            // Create jump particles
+            ParticleSystem.createJumpParticles(this.x + this.width / 2, this.y + this.height);
+        }
+    },
+    
+    update() {
+        const groundY = EngineConfig.height - 100;
+        
+        // Apply gravity
+        this.velocityY += this.gravity;
+        this.y += this.velocityY;
+        
+        // Ground collision
+        if (this.y + this.height >= groundY) {
+            this.y = groundY - this.height;
+            this.velocityY = 0;
+            this.isGrounded = true;
+            this.rotation = 0;
+        } else {
+            this.isGrounded = false;
+            this.rotation += 5; // Rotate while airborne
+        }
+        
+        // Ceiling collision
+        if (this.y < 0) {
+            this.y = 0;
+            this.velocityY = 0;
+        }
+        
+        // Animation
+        this.animationFrame++;
+        this.pulseScale = 1 + Math.sin(this.animationFrame * 0.1) * 0.05;
+        
+        // Power-ups
+        if (this.invincible) {
+            this.invincibleTimer--;
+            if (this.invincibleTimer <= 0) {
+                this.invincible = false;
+            }
+        }
+    },
+    
+    draw(ctx) {
+        ctx.save();
+        
+        // Translate to player center
+        ctx.translate(this.x + this.width / 2, this.y + this.height / 2);
+        
+        // Rotation
+        if (!this.isGrounded) {
+            ctx.rotate((this.rotation * Math.PI) / 180);
+        }
+        
+        // Scale
+        ctx.scale(this.pulseScale, this.pulseScale);
+        
+        // Glow effect
+        if (this.invincible) {
+            ctx.shadowBlur = 40;
+            ctx.shadowColor = '#ffff00';
+        } else {
+            ctx.shadowBlur = EngineConfig.shadowBlur * EngineConfig.glowIntensity;
+            ctx.shadowColor = this.color;
+        }
+        
+        // Draw player
+        ctx.fillStyle = this.color;
+        ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
+        
+        // Inner glow
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.fillRect(-this.width / 2 + 5, -this.height / 2 + 5, this.width - 10, this.height - 10);
+        
+        ctx.restore();
+        
+        // Trail effect
+        if (!this.isGrounded) {
+            ParticleSystem.createTrailParticle(this.x + this.width / 2, this.y + this.height / 2, this.color);
+        }
+    },
+    
+    applySkin(skinId) {
+        const skin = ShopSystem.skins.find(s => s.id === skinId);
+        if (skin) {
+            this.color = skin.color;
+        }
+    },
+    
+    getBounds() {
+        return {
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height
+        };
+    }
+};
+
+/* ========================================
+   OBSTACLE SYSTEM
+======================================== */
+
+const ObstacleManager = {
+    obstacles: [],
+    coins: [],
+    powerUps: [],
+    
+    obstacleTypes: [
+        { width: 40, height: 80, color: '#ff00ff', points: 10 },
+        { width: 60, height: 120, color: '#bc13fe', points: 20 },
+        { width: 30, height: 60, color: '#ff0040', points: 15 },
+    ],
+    
+    reset() {
+        this.obstacles = [];
+        this.coins = [];
+        this.powerUps = [];
+    },
+    
+    update() {
+        // Update obstacles
+        for (let i = this.obstacles.length - 1; i >= 0; i--) {
+            const obs = this.obstacles[i];
+            obs.x -= GameState.gameSpeed;
+            
+            // Remove if off-screen
+            if (obs.x + obs.width < 0) {
+                this.obstacles.splice(i, 1);
+                GameState.addScore(obs.points);
+            }
+        }
+        
+        // Update coins
+        for (let i = this.coins.length - 1; i >= 0; i--) {
+            const coin = this.coins[i];
+            coin.x -= GameState.gameSpeed;
+            coin.rotation += 5;
+            coin.bobOffset = Math.sin(coin.animationFrame++ * 0.1) * 5;
+            
+            // Check collision with player
+            if (this.checkCoinCollision(coin)) {
+                this.coins.splice(i, 1);
+                GameState.addCoins(1);
+                AudioEngine.playCoinCollect();
+                ParticleSystem.createCoinExplosion(coin.x, coin.y);
+                continue;
+            }
+            
+            // Remove if off-screen
+            if (coin.x + coin.size < 0) {
+                this.coins.splice(i, 1);
+            }
+        }
+        
+        // Update power-ups
+        for (let i = this.powerUps.length - 1; i >= 0; i--) {
+            const powerUp = this.powerUps[i];
+            powerUp.x -= GameState.gameSpeed;
+            powerUp.rotation += 3;
+            
+            // Check collision
+            if (this.checkPowerUpCollision(powerUp)) {
+                this.powerUps.splice(i, 1);
+                this.activatePowerUp(powerUp.type);
+                continue;
+            }
+            
+            // Remove if off-screen
+            if (powerUp.x + powerUp.size < 0) {
+                this.powerUps.splice(i, 1);
+            }
+        }
+        
+        // Spawn new obstacles
+        GameState.obstacleSpawnTimer++;
+        if (GameState.obstacleSpawnTimer >= GameState.obstacleSpawnInterval) {
+            this.spawnObstacle();
+            GameState.obstacleSpawnTimer = 0;
+            
+            // Randomly spawn coins
+            if (Math.random() < 0.3) {
+                this.spawnCoin();
+            }
+            
+            // Rarely spawn power-ups
+            if (Math.random() < 0.05) {
+                this.spawnPowerUp();
+            }
+        }
+    },
+    
+    draw(ctx) {
+        // Draw obstacles
+        this.obstacles.forEach(obs => {
+            ctx.save();
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = obs.color;
+            ctx.fillStyle = obs.color;
+            ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+            
+            // Pattern
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            for (let i = 0; i < obs.height; i += 10) {
+                ctx.fillRect(obs.x, obs.y + i, obs.width, 2);
+            }
+            ctx.restore();
+        });
+        
+        // Draw coins
+        this.coins.forEach(coin => {
+            ctx.save();
+            ctx.translate(coin.x, coin.y + coin.bobOffset);
+            ctx.rotate((coin.rotation * Math.PI) / 180);
+            
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = '#ffff00';
+            ctx.fillStyle = '#ffff00';
+            ctx.beginPath();
+            ctx.arc(0, 0, coin.size, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Inner shine
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.beginPath();
+            ctx.arc(-3, -3, coin.size / 3, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.restore();
+        });
+        
+        // Draw power-ups
+        this.powerUps.forEach(powerUp => {
+            ctx.save();
+            ctx.translate(powerUp.x, powerUp.y);
+            ctx.rotate((powerUp.rotation * Math.PI) / 180);
+            
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = '#39ff14';
+            ctx.fillStyle = '#39ff14';
+            ctx.fillRect(-powerUp.size / 2, -powerUp.size / 2, powerUp.size, powerUp.size);
+            
+            ctx.restore();
+        });
+    },
+    
+    spawnObstacle() {
+        const type = this.obstacleTypes[Math.floor(Math.random() * this.obstacleTypes.length)];
+        const groundY = EngineConfig.height - 100;
+        
+        this.obstacles.push({
+            x: EngineConfig.width,
+            y: groundY - type.height,
+            width: type.width,
+            height: type.height,
+            color: type.color,
+            points: type.points
+        });
+    },
+    
+    spawnCoin() {
+        const groundY = EngineConfig.height - 100;
+        const minHeight = 100;
+        const maxHeight = groundY - 100;
+        
+        this.coins.push({
+            x: EngineConfig.width,
+            y: minHeight + Math.random() * (maxHeight - minHeight),
+            size: 15,
+            rotation: 0,
+            bobOffset: 0,
+            animationFrame: 0
+        });
+    },
+    
+    spawnPowerUp() {
+        const groundY = EngineConfig.height - 100;
+        
+        this.powerUps.push({
+            x: EngineConfig.width,
+            y: groundY - 150,
+            size: 30,
+            rotation: 0,
+            type: 'invincible'
+        });
+    },
+    
+    checkCollisions() {
+        if (Player.invincible) return false;
+        
+        const playerBounds = Player.getBounds();
+        
+        for (let obs of this.obstacles) {
+            if (this.checkCollision(playerBounds, obs)) {
+                return true;
+            }
+        }
+        
+        return false;
+    },
+    
+    checkCollision(rect1, rect2) {
+        return rect1.x < rect2.x + rect2.width &&
+               rect1.x + rect1.width > rect2.x &&
+               rect1.y < rect2.y + rect2.height &&
+               rect1.y + rect1.height > rect2.y;
+    },
+    
+    checkCoinCollision(coin) {
+        const playerBounds = Player.getBounds();
+        const dist = Math.hypot(
+            (playerBounds.x + playerBounds.width / 2) - coin.x,
+            (playerBounds.y + playerBounds.height / 2) - coin.y
+        );
+        return dist < (playerBounds.width / 2 + coin.size);
+    },
+    
+    checkPowerUpCollision(powerUp) {
+        const playerBounds = Player.getBounds();
+        return this.checkCollision(playerBounds, {
+            x: powerUp.x - powerUp.size / 2,
+            y: powerUp.y - powerUp.size / 2,
+            width: powerUp.size,
+            height: powerUp.size
+        });
+    },
+    
+    activatePowerUp(type) {
+        if (type === 'invincible') {
+            Player.invincible = true;
+            Player.invincibleTimer = 300; // 5 seconds at 60fps
+            AudioEngine.playPowerUp();
+            UIManager.showNotification('⭐ INVINCIBLE!', 'success');
+        }
+    }
+};
+
+/* ========================================
+   PARTICLE SYSTEM
+======================================== */
+
+const ParticleSystem = {
+    particles: [],
+    maxParticles: 500,
+    
+    update() {
+        for (let i = this.particles.length - 1; i >= 0; i--) {
+            const p = this.particles[i];
+            
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += p.gravity;
+            p.life--;
+            p.alpha = p.life / p.maxLife;
+            
+            if (p.life <= 0) {
+                this.particles.splice(i, 1);
+            }
+        }
+        
+        // Limit particle count
+        if (this.particles.length > this.maxParticles) {
+            this.particles = this.particles.slice(-this.maxParticles);
+        }
+    },
+    
+    draw(ctx) {
+        this.particles.forEach(p => {
+            ctx.save();
+            ctx.globalAlpha = p.alpha;
+            ctx.fillStyle = p.color;
+            
+            if (p.shape === 'circle') {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+            } else {
+                ctx.fillRect(p.x, p.y, p.size, p.size);
+            }
+            
+            ctx.restore();
+        });
+    },
+    
+    createParticle(x, y, color, vx, vy, size, life, gravity = 0.3) {
+        if (this.particles.length >= EngineConfig.particleCount) return;
+        
+        this.particles.push({
+            x, y, color,
+            vx, vy,
+            size,
+            life,
+            maxLife: life,
+            alpha: 1,
+            gravity,
+            shape: Math.random() > 0.5 ? 'circle' : 'square'
+        });
+    },
+    
+    createJumpParticles(x, y) {
+        for (let i = 0; i < 10; i++) {
+            this.createParticle(
+                x + (Math.random() - 0.5) * 20,
+                y,
+                Player.color,
+                (Math.random() - 0.5) * 4,
+                Math.random() * -3,
+                Math.random() * 5 + 3,
+                30
+            );
+        }
+    },
+    
+    createTrailParticle(x, y, color) {
+        if (Math.random() > 0.3) return;
+        
+        this.createParticle(
+            x + (Math.random() - 0.5) * 10,
+            y + (Math.random() - 0.5) * 10,
+            color,
+            (Math.random() - 0.5) * 2,
+            (Math.random() - 0.5) * 2,
+            Math.random() * 4 + 2,
+            20,
+            0.1
+        );
+    },
+    
+    createCoinExplosion(x, y) {
+        for (let i = 0; i < 20; i++) {
+            const angle = (Math.PI * 2 * i) / 20;
+            this.createParticle(
+                x,
+                y,
+                '#ffff00',
+                Math.cos(angle) * 4,
+                Math.sin(angle) * 4,
+                Math.random() * 4 + 2,
+                40,
+                0.2
+            );
+        }
+    },
+    
+    createCollisionExplosion(x, y) {
+        for (let i = 0; i < 50; i++) {
+            this.createParticle(
+                x,
+                y,
+                Math.random() > 0.5 ? '#ff0040' : '#ff6600',
+                (Math.random() - 0.5) * 10,
+                (Math.random() - 0.5) * 10,
+                Math.random() * 6 + 3,
+                60,
+                0.3
+            );
+        }
+    },
+    
+    createLevelUpExplosion() {
+        const centerX = EngineConfig.width / 2;
+        const centerY = EngineConfig.height / 2;
+        
+        for (let i = 0; i < 100; i++) {
+            const angle = (Math.PI * 2 * i) / 100;
+            const speed = 5 + Math.random() * 5;
+            this.createParticle(
+                centerX,
+                centerY,
+                ['#00f3ff', '#ff00ff', '#39ff14', '#ffff00'][Math.floor(Math.random() * 4)],
+                Math.cos(angle) * speed,
+                Math.sin(angle) * speed,
+                Math.random() * 8 + 4,
+                80,
+                0.1
+            );
+        }
+    },
+    
+    reset() {
+        this.particles = [];
+    }
+};
+
+/* ========================================
+   BACKGROUND SYSTEM
+======================================== */
+
+const BackgroundSystem = {
+    stars: [],
+    gridLines: [],
+    
+    init() {
+        // Create stars
+        for (let i = 0; i < 100; i++) {
+            this.stars.push({
+                x: Math.random() * EngineConfig.width,
+                y: Math.random() * EngineConfig.height,
+                size: Math.random() * 2 + 1,
+                speed: Math.random() * 0.5 + 0.2,
+                brightness: Math.random()
+            });
+        }
+        
+        // Create grid
+        for (let i = 0; i < 20; i++) {
+            this.gridLines.push({
+                x: Math.random() * EngineConfig.width,
+                speed: Math.random() * 2 + 1,
+                opacity: Math.random() * 0.3 + 0.1
+            });
+        }
+    },
+    
+    update() {
+        // Update stars
+        this.stars.forEach(star => {
+            star.x -= star.speed;
+            if (star.x < 0) {
+                star.x = EngineConfig.width;
+                star.y = Math.random() * EngineConfig.height;
+            }
+            star.brightness = 0.5 + Math.sin(Date.now() * 0.001 + star.x) * 0.5;
+        });
+        
+        // Update grid
+        this.gridLines.forEach(line => {
+            line.x -= line.speed;
+            if (line.x < 0) {
+                line.x = EngineConfig.width;
+            }
+        });
+    },
+    
+    draw(ctx) {
+        // Draw gradient background
+        const gradient = ctx.createLinearGradient(0, 0, 0, EngineConfig.height);
+        gradient.addColorStop(0, '#0a0a1a');
+        gradient.addColorStop(0.5, '#1a0a2a');
+        gradient.addColorStop(1, '#0a0a0a');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, EngineConfig.width, EngineConfig.height);
+        
+        // Draw stars
+        this.stars.forEach(star => {
+            ctx.fillStyle = `rgba(255, 255, 255, ${star.brightness})`;
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+            ctx.fill();
+        });
+        
+        // Draw grid lines
+        ctx.strokeStyle = 'rgba(0, 243, 255, 0.1)';
+        ctx.lineWidth = 1;
+        this.gridLines.forEach(line => {
+            ctx.globalAlpha = line.opacity;
+            ctx.beginPath();
+            ctx.moveTo(line.x, 0);
+            ctx.lineTo(line.x, EngineConfig.height);
+            ctx.stroke();
+        });
+        ctx.globalAlpha = 1;
+        
+        // Draw ground
+        const groundY = EngineConfig.height - 100;
+        const groundGradient = ctx.createLinearGradient(0, groundY, 0, EngineConfig.height);
+        groundGradient.addColorStop(0, 'rgba(0, 243, 255, 0.3)');
+        groundGradient.addColorStop(1, 'rgba(0, 243, 255, 0.1)');
+        ctx.fillStyle = groundGradient;
+        ctx.fillRect(0, groundY, EngineConfig.width, EngineConfig.height - groundY);
+        
+        // Ground line
+        ctx.strokeStyle = '#00f3ff';
+        ctx.lineWidth = 3;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#00f3ff';
+        ctx.beginPath();
+        ctx.moveTo(0, groundY);
+        ctx.lineTo(EngineConfig.width, groundY);
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+    }
+};
+
+/* ========================================
+   SHOP SYSTEM
+======================================== */
+
+const ShopSystem = {
+    skins: [
+        { id: 'default', name: 'Default Cyan', color: '#00f3ff', price: 0, unlocked: true },
+        { id: 'pink', name: 'Hot Pink', color: '#ff00ff', price: 100, unlocked: false },
+        { id: 'purple', name: 'Purple Rain', color: '#bc13fe', price: 150, unlocked: false },
+        { id: 'green', name: 'Toxic Green', color: '#39ff14', price: 200, unlocked: false },
+        { id: 'orange', name: 'Blazing Orange', color: '#ff6600', price: 250, unlocked: false },
+        { id: 'red', name: 'Blood Red', color: '#ff0040', price: 300, unlocked: false },
+        { id: 'yellow', name: 'Electric Yellow', color: '#ffff00', price: 350, unlocked: false },
+        { id: 'white', name: 'Pure White', color: '#ffffff', price: 500, unlocked: false },
+        { id: 'rainbow', name: 'Rainbow (Animated)', color: '#00f3ff', price: 1000, unlocked: false, special: true }
+    ],
+    
+    init() {
+        // Load unlocked skins
+        const saveData = SaveSystem.getSaveData();
+        this.skins.forEach(skin => {
+            if (saveData.unlockedSkins && saveData.unlockedSkins.includes(skin.id)) {
+                skin.unlocked = true;
+            }
+        });
+        
+        this.renderShop();
+    },
+    
+    renderShop() {
+        const grid = document.getElementById('shopGrid');
+        grid.innerHTML = '';
+        
+        const totalCoins = SaveSystem.getCoins();
+        document.getElementById('shopCoins').textContent = totalCoins;
+        
+        this.skins.forEach(skin => {
+            const item = document.createElement('div');
+            item.className = 'shop-item' + (skin.unlocked ? '' : ' shop-item-locked');
+            
+            item.innerHTML = `
+                <div class="shop-item-preview" style="background: ${skin.color}">
+                    ${skin.special ? '🌈' : ''}
+                </div>
+                <div class="shop-item-name">${skin.name}</div>
+                <div class="shop-item-price">
+                    ${skin.unlocked ? '✅ OWNED' : `💰 ${skin.price} Coins`}
+                </div>
+            `;
+            
+            if (skin.unlocked) {
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-success';
+                btn.textContent = 'EQUIP';
+                btn.onclick = () => this.equipSkin(skin.id);
+                item.appendChild(btn);
+            } else if (totalCoins >= skin.price) {
+                const btn = document.createElement('button');
+                btn.className = 'btn';
+                btn.textContent = 'BUY';
+                btn.onclick = () => this.buySkin(skin.id);
+                item.appendChild(btn);
+            } else {
+                const btn = document.createElement('button');
+                btn.className = 'btn';
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+                btn.textContent = 'NOT ENOUGH COINS';
+                item.appendChild(btn);
+            }
+            
+            grid.appendChild(item);
+        });
+    },
+    
+    buySkin(skinId) {
+        const skin = this.skins.find(s => s.id === skinId);
+        if (!skin) return;
+        
+        if (SaveSystem.spendCoins(skin.price)) {
+            skin.unlocked = true;
+            SaveSystem.unlockSkin(skinId);
+            AudioEngine.playUnlock();
+            UIManager.showNotification(`🎉 Unlocked ${skin.name}!`, 'success');
+            this.renderShop();
+            AchievementSystem.checkAchievement('skins', this.skins.filter(s => s.unlocked).length);
+        }
+    },
+    
+    equipSkin(skinId) {
+        SaveSystem.setCurrentSkin(skinId);
+        Player.applySkin(skinId);
+        AudioEngine.playClick();
+        UIManager.showNotification('✅ Skin equipped!', 'success');
+    }
+};
+
+/* ========================================
+   ACHIEVEMENT SYSTEM
+======================================== */
+
+const AchievementSystem = {
+    achievements: [
+        { id: 'first_jump', name: 'First Jump', desc: 'Jump for the first time', icon: '🦘', unlocked: false, type: 'jumps', requirement: 1 },
+        { id: 'score_100', name: 'Beginner', desc: 'Reach 100 points', icon: '🎯', unlocked: false, type: 'score', requirement: 100 },
+        { id: 'score_500', name: 'Intermediate', desc: 'Reach 500 points', icon: '🎖️', unlocked: false, type: 'score', requirement: 500 },
+        { id: 'score_1000', name: 'Expert', desc: 'Reach 1000 points', icon: '🏅', unlocked: false, type: 'score', requirement: 1000 },
+        { id: 'score_5000', name: 'Master', desc: 'Reach 5000 points', icon: '👑', unlocked: false, type: 'score', requirement: 5000 },
+        { id: 'coin_100', name: 'Wealthy', desc: 'Collect 100 coins', icon: '💰', unlocked: false, type: 'coins', requirement: 100 },
+        { id: 'level_5', name: 'Level Up', desc: 'Reach level 5', icon: '⬆️', unlocked: false, type: 'level', requirement: 5 },
+        { id: 'level_10', name: 'High Achiever', desc: 'Reach level 10', icon: '🚀', unlocked: false, type: 'level', requirement: 10 },
+        { id: 'games_10', name: 'Persistent', desc: 'Play 10 games', icon: '🎮', unlocked: false, type: 'games', requirement: 10 },
+        { id: 'skins_5', name: 'Fashionista', desc: 'Unlock 5 skins', icon: '👔', unlocked: false, type: 'skins', requirement: 5 }
+    ],
+    
+    init() {
+        // Load unlocked achievements
+        const saveData = SaveSystem.getSaveData();
+        if (saveData.achievements) {
+            this.achievements.forEach(ach => {
+                if (saveData.achievements[ach.id]) {
+                    ach.unlocked = true;
+                }
+            });
+        }
+        
+        this.renderAchievements();
+    },
+    
+    renderAchievements() {
+        const grid = document.getElementById('achievementsGrid');
+        grid.innerHTML = '';
+        
+        const unlockedCount = this.achievements.filter(a => a.unlocked).length;
+        document.getElementById('achievementCount').textContent = unlockedCount;
+        document.getElementById('achievementTotal').textContent = this.achievements.length;
+        
+        this.achievements.forEach(ach => {
+            const item = document.createElement('div');
+            item.className = 'achievement' + (ach.unlocked ? ' unlocked' : '');
+            
+            item.innerHTML = `
+                <div class="achievement-icon">${ach.icon}</div>
+                <div class="achievement-title">${ach.name}</div>
+                <div class="achievement-desc">${ach.desc}</div>
+            `;
+            
+            grid.appendChild(item);
+        });
+    },
+    
+    checkAchievement(type, value) {
+        this.achievements.forEach(ach => {
+            if (ach.type === type && !ach.unlocked && value >= ach.requirement) {
+                this.unlockAchievement(ach.id);
+            }
+        });
+    },
+    
+    unlockAchievement(achId) {
+        const ach = this.achievements.find(a => a.id === achId);
+        if (!ach || ach.unlocked) return;
+        
+        ach.unlocked = true;
+        
+        // Save
+        const saveData = SaveSystem.getSaveData();
+        if (!saveData.achievements) saveData.achievements = {};
+        saveData.achievements[achId] = true;
+        SaveSystem.save(saveData);
+        
+        // Notify
+        AudioEngine.playUnlock();
+        UIManager.showNotification(`🏆 Achievement Unlocked: ${ach.name}!`, 'success');
+        
+        // Reward
+        SaveSystem.addCoins(50);
+        UIManager.showNotification('💰 +50 Bonus Coins!', 'success');
+        
+        this.renderAchievements();
+    }
+};
+
+/* ========================================
+   LEADERBOARD SYSTEM
+======================================== */
+
+const LeaderboardSystem = {
+    leaderboards: {
+        classic: [],
+        endless: [],
+        timeattack: []
+    },
+    
+    init() {
+        this.loadLeaderboards();
+    },
+    
+    loadLeaderboards() {
+        // In a real game, this would fetch from a server
+        // For now, we'll use localStorage
+        const saved = localStorage.getItem('neonNebula_leaderboards');
+        if (saved) {
+            this.leaderboards = JSON.parse(saved);
+        }
+    },
+    
+    saveLeaderboards() {
+        localStorage.setItem('neonNebula_leaderboards', JSON.stringify(this.leaderboards));
+    },
+    
+    addScore(mode, name, score) {
+        this.leaderboards[mode].push({ name, score, date: Date.now() });
+        this.leaderboards[mode].sort((a, b) => b.score - a.score);
+        this.leaderboards[mode] = this.leaderboards[mode].slice(0, 10); // Keep top 10
+        this.saveLeaderboards();
+    },
+    
+    displayLeaderboard(mode) {
+        const list = document.getElementById('leaderboardList');
+        list.innerHTML = '';
+        
+        const board = this.leaderboards[mode] || [];
+        
+        if (board.length === 0) {
+            list.innerHTML = '<div style="text-align: center; color: rgba(255,255,255,0.5); padding: 2rem;">No scores yet. Be the first!</div>';
+            return;
+        }
+        
+        board.forEach((entry, i) => {
+            const item = document.createElement('div');
+            item.className = 'leaderboard-entry';
+            item.innerHTML = `
+                <div class="leaderboard-rank">#${i + 1}</div>
+                <div class="leaderboard-name">${entry.name || 'Anonymous'}</div>
+                <div class="leaderboard-score">${entry.score}</div>
+            `;
+            list.appendChild(item);
+        });
+    }
+};
+
+/* ========================================
+   UI MANAGER
+======================================== */
+
+const UIManager = {
+    init() {
+        // Hide loading screen
+        setTimeout(() => {
+            document.getElementById('loadingScreen').style.display = 'none';
+        }, 1000);
+        
+        // Initialize subsystems
+        ShopSystem.init();
+        AchievementSystem.init();
+        LeaderboardSystem.init();
+        
+        // Load settings
+        const saveData = SaveSystem.getSaveData();
+        if (saveData.settings) {
+            I18nSystem.setLanguage(saveData.settings.language);
+            AudioEngine.setMasterVolume(saveData.settings.masterVolume);
+            AudioEngine.setMusicVolume(saveData.settings.musicVolume);
+            AudioEngine.setSFXVolume(saveData.settings.sfxVolume);
+            EngineConfig.setQuality(saveData.settings.quality);
+            InputManager.setControlStyle(saveData.settings.controlStyle);
+            
+            document.getElementById('volRange').value = saveData.settings.masterVolume;
+            document.getElementById('musicVolRange').value = saveData.settings.musicVolume;
+            document.getElementById('sfxVolRange').value = saveData.settings.sfxVolume;
+            document.getElementById('qualitySelect').value = saveData.settings.quality;
+            document.getElementById('controlSelect').value = saveData.settings.controlStyle;
+        }
+    },
+    
+    updateHUD() {
+        document.getElementById('hudScore').textContent = Math.floor(GameState.score);
+        document.getElementById('hudLevel').textContent = GameState.level;
+        document.getElementById('hudCoins').textContent = SaveSystem.getCoins();
+        document.getElementById('hudHighScore').textContent = GameState.highScore;
+    },
+    
+    showSettings() {
+        AudioEngine.playClick();
+        document.getElementById('settingsPanel').classList.remove('hidden');
+    },
+    
+    hideSettings() {
+        AudioEngine.playClick();
+        document.getElementById('settingsPanel').classList.add('hidden');
+    },
+    
+    showShop() {
+        AudioEngine.playClick();
+        ShopSystem.renderShop();
+        document.getElementById('shopPanel').classList.remove('hidden');
+    },
+    
+    hideShop() {
+        AudioEngine.playClick();
+        document.getElementById('shopPanel').classList.add('hidden');
+    },
+    
+    showAchievements() {
+        AudioEngine.playClick();
+        AchievementSystem.renderAchievements();
+        document.getElementById('achievementsPanel').classList.remove('hidden');
+    },
+    
+    hideAchievements() {
+        AudioEngine.playClick();
+        document.getElementById('achievementsPanel').classList.add('hidden');
+    },
+    
+    showLeaderboard() {
+        AudioEngine.playClick();
+        LeaderboardSystem.displayLeaderboard('classic');
+        document.getElementById('leaderboardPanel').classList.remove('hidden');
+    },
+    
+    hideLeaderboard() {
+        AudioEngine.playClick();
+        document.getElementById('leaderboardPanel').classList.add('hidden');
+    },
+    
+    showTutorial() {
+        AudioEngine.playClick();
+        document.getElementById('tutorialPanel').classList.remove('hidden');
+    },
+    
+    hideTutorial() {
+        AudioEngine.playClick();
+        document.getElementById('tutorialPanel').classList.add('hidden');
+    },
+    
+    showGameOver(score, coins) {
+        const panel = document.getElementById('gameOverPanel');
+        document.getElementById('finalScore').textContent = Math.floor(score);
+        document.getElementById('coinsEarned').textContent = coins;
+        document.getElementById('bestScore').textContent = GameState.highScore;
+        
+        // Check if new record
+        const isNewRecord = SaveSystem.saveHighScore(GameState.gameMode, Math.floor(score));
+        if (isNewRecord) {
+            document.getElementById('newRecordBadge').classList.remove('hidden');
+            AudioEngine.playLevelUp();
+        } else {
+            document.getElementById('newRecordBadge').classList.add('hidden');
+        }
+        
+        panel.classList.remove('hidden');
+    },
+    
+    hideGameOver() {
+        document.getElementById('gameOverPanel').classList.add('hidden');
+    },
+    
+    showPause() {
+        document.getElementById('pausePanel').classList.remove('hidden');
+    },
+    
+    hidePause() {
+        document.getElementById('pausePanel').classList.add('hidden');
+    },
+    
+    returnToMenu() {
+        AudioEngine.playClick();
+        this.hideGameOver();
+        this.hidePause();
+        this.hideLeaderboard();
+        document.getElementById('hud').classList.add('hidden');
+        document.getElementById('startScreen').classList.remove('hidden');
+        GameState.isPlaying = false;
+        GameState.isPaused = false;
+    },
+    
+    showNotification(message, type = 'info') {
+        const notif = document.createElement('div');
+        notif.className = 'notification';
+        notif.textContent = message;
+        
+        if (type === 'success') {
+            notif.style.borderColor = '#39ff14';
+            notif.style.boxShadow = '0 0 30px rgba(57, 255, 20, 0.5)';
+        }
+        
+        document.body.appendChild(notif);
+        
+        setTimeout(() => {
+            notif.remove();
+        }, 3000);
+    }
+};
+
+/* ========================================
+   GAME CONTROLLER
+   Main Game Loop & Logic
+======================================== */
+
+const GameController = {
+    animationId: null,
+    
+    init() {
+        console.log('Initializing Neon Nebula Pro...');
+        
+        // Initialize engine
+        EngineConfig.init();
+        AudioEngine.init();
+        InputManager.init();
+        BackgroundSystem.init();
+        UIManager.init();
+        
+        // Start render loop
+        this.startRenderLoop();
+        
+        console.log('Game initialized successfully!');
+    },
+    
+    startGame(mode) {
+        AudioEngine.playClick();
+        GameState.gameMode = mode;
+        GameState.reset();
+        GameState.isPlaying = true;
+        GameState.isPaused = false;
+        
+        // Get high score for this mode
+        GameState.highScore = SaveSystem.getHighScore(mode);
+        
+        // Reset systems
+        Player.init();
+        ObstacleManager.reset();
+        ParticleSystem.reset();
+        
+        // Update stats
+        SaveSystem.incrementStat('gamesPlayed');
+        
+        // Check achievements
+        const saveData = SaveSystem.getSaveData();
+        AchievementSystem.checkAchievement('games', saveData.stats.gamesPlayed);
+        
+        // Hide menu, show HUD
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('hud').classList.remove('hidden');
+        UIManager.updateHUD();
+        
+        // Start music
+        AudioEngine.startBackgroundMusic();
+        
+        console.log(`Game started in ${mode} mode`);
+    },
+    
+    pauseGame() {
+        if (!GameState.isPlaying || GameState.isPaused) return;
+        
+        GameState.isPaused = true;
+        AudioEngine.playClick();
+        UIManager.showPause();
+    },
+    
+    resumeGame() {
+        if (!GameState.isPaused) return;
+        
+        GameState.isPaused = false;
+        AudioEngine.playClick();
+        UIManager.hidePause();
+    },
+    
+    restartGame() {
+        AudioEngine.playClick();
+        UIManager.hideGameOver();
+        UIManager.hidePause();
+        this.startGame(GameState.gameMode);
+    },
+    
+    gameOver() {
+        if (!GameState.isPlaying) return;
+        
+        GameState.isPlaying = false;
+        
+        // Create explosion
+        ParticleSystem.createCollisionExplosion(
+            Player.x + Player.width / 2,
+            Player.y + Player.height / 2
+        );
+        
+        // Play sound
+        AudioEngine.playGameOver();
+        
+        // Save stats
+        SaveSystem.incrementStat('totalDeaths');
+        SaveSystem.incrementStat('totalScore');
+        
+        // Add to leaderboard
+        LeaderboardSystem.addScore(GameState.gameMode, 'Player', Math.floor(GameState.score));
+        
+        // Check achievements
+        AchievementSystem.checkAchievement('score', Math.floor(GameState.score));
+        AchievementSystem.checkAchievement('coins', SaveSystem.getCoins());
+        
+        // Hide HUD
+        document.getElementById('hud').classList.add('hidden');
+        
+        // Show game over
+        setTimeout(() => {
+            UIManager.showGameOver(GameState.score, GameState.coins);
+        }, 500);
+    },
+    
+    update() {
+        if (!GameState.isPlaying || GameState.isPaused) return;
+        
+        // Update game objects
+        Player.update();
+        ObstacleManager.update();
+        ParticleSystem.update();
+        BackgroundSystem.update();
+        
+        // Check collisions
+        if (ObstacleManager.checkCollisions()) {
+            AudioEngine.playCollision();
+            this.gameOver();
+            return;
+        }
+        
+        // Time Attack mode
+        if (GameState.gameMode === 'timeattack') {
+            GameState.timeAttackTimer++;
+            if (GameState.timeAttackTimer >= 60) {
+                GameState.timeRemaining--;
+                GameState.timeAttackTimer = 0;
+                
+                if (GameState.timeRemaining <= 0) {
+                    this.gameOver();
+                }
+            }
+        }
+        
+        // Passive score
+        GameState.addScore(0.1);
+    },
+    
+    render() {
+        const ctx = EngineConfig.ctx;
+        
+        // Clear with fade effect
+        ctx.fillStyle = 'rgba(10, 10, 10, 0.2)';
+        ctx.fillRect(0, 0, EngineConfig.width, EngineConfig.height);
+        
+        // Draw game
+        BackgroundSystem.draw(ctx);
+        ParticleSystem.draw(ctx);
+        ObstacleManager.draw(ctx);
+        Player.draw(ctx);
+        
+        // Debug info (optional)
+        if (false) { // Set to true for debugging
+            ctx.fillStyle = 'white';
+            ctx.font = '12px monospace';
+            ctx.fillText(`FPS: ${Math.round(1000 / EngineConfig.deltaTime)}`, 10, 20);
+            ctx.fillText(`Obstacles: ${ObstacleManager.obstacles.length}`, 10, 35);
+            ctx.fillText(`Particles: ${ParticleSystem.particles.length}`, 10, 50);
+        }
+    },
+    
+    startRenderLoop() {
+        const loop = (currentTime) => {
+            // Calculate delta time
+            EngineConfig.deltaTime = currentTime - EngineConfig.lastFrameTime;
+            EngineConfig.lastFrameTime = currentTime;
+            
+            // Update & Render
+            this.update();
+            this.render();
+            
+            // Continue loop
+            this.animationId = requestAnimationFrame(loop);
+        };
+        
+        this.animationId = requestAnimationFrame(loop);
+    }
+};
+
+/* ========================================
+   INITIALIZATION
+======================================== */
+
+window.addEventListener('load', () => {
+    GameController.init();
+});
+
+// Prevent context menu
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+// Prevent default touch behaviors
+document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+
+</script>
+
+</body>
+</html>
